@@ -93,6 +93,7 @@ with st.sidebar:
 # Main page layout
 col1, col2 = st.columns([4, 5], gap="small")
 
+
 # Column 1: Chat Interface
 with col1:
     st.title("Chat Interface")
