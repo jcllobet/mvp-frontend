@@ -55,6 +55,11 @@ def displayPDF(file):
     st.markdown(pdf_display, unsafe_allow_html=True)
 
 
+# Initialize state variables
+if "all_answered" not in st.session_state:
+    st.session_state["all_answered"] = False
+    st.session_state["answers"] = [None] * 4
+
 # Sidebar for uploading documents
 with st.sidebar:
     st.title("Upload Documents")
@@ -96,11 +101,40 @@ col1, col2 = st.columns([4, 5], gap="small")
 
 # Column 1: Chat Interface
 with col1:
-    st.title("Chat Interface")
-    user_input = st.text_input("Type your message here")
-    if user_input:
-        st.write(f"You said: {user_input}")
-        st.write("Chat response will appear here")
+    if not st.session_state["all_answered"]:
+        # Display questions when all answers are not submitted
+        st.title("Questions")
+
+        # Define your questions
+        questions = [
+            "Question 1: Do you like Python?",
+            "Question 2: Have you used Streamlit before?",
+            "Question 3: Is AI interesting to you?",
+            "Question 4: Do you enjoy learning new technologies?",
+        ]
+
+        # Display questions with yes/no options
+        all_answered = True
+        for i, question in enumerate(questions):
+            st.session_state["answers"][i] = st.radio(
+                question, ("Yes", "No"), key=f"question_{i}"
+            )
+            if st.session_state["answers"][i] is None:
+                all_answered = False
+
+        # Submit button
+        if st.button("Submit"):
+            if all_answered:
+                st.session_state["all_answered"] = True
+            else:
+                st.warning("Please answer all questions before submitting.")
+    else:
+        # Display chat when all answers are submitted
+        st.title("Chat Interface")
+        user_input = st.text_input("Type your message here")
+        if user_input:
+            st.write(f"You said: {user_input}")
+            st.write("Chat response will appear here")
 
 
 # Column 2: PDF Rendering
