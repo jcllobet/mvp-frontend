@@ -96,11 +96,11 @@ with st.sidebar:
 
 
 # Main page layout
-col1, col2 = st.columns([4, 5], gap="small")
+col1, col2 = st.columns(2)  # st.columns([4, 5], gap="small")
 
 
 # Column 1: Chat Interface
-with col1:
+with col1.container(height=800):
     if not st.session_state["all_answered"]:
         # Display questions when all answers are not submitted
         st.title("Questions")
@@ -136,9 +136,8 @@ with col1:
             st.write(f"You said: {user_input}")
             st.write("Chat response will appear here")
 
-
 # Column 2: PDF Rendering
-with col2:
+with col2.container(height=800):
     st.title("PDF Viewer")
 
     if uploaded_file is not None:
